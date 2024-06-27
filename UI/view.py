@@ -8,34 +8,61 @@ class View(ft.UserControl):
         self._page = page
         self._page.title = "Template application using MVC and DAO"
         self._page.horizontal_alignment = 'CENTER'
-        self._page.theme_mode = ft.ThemeMode.DARK
+        self._page.theme_mode = ft.ThemeMode.LIGHT
         # controller (it is not initialized. Must be initialized in the main, after the controller is created)
         self._controller = None
         # graphical elements
         self._title = None
-        self.txt_name = None
-        self.btn_hello = None
+        self._btnAnalizza = None
+        self.txtInCompagnie = None
+        self._txtDescrizioneCompagnie = None
+        self._btnConnessi = None
+        self.ddAeroportoP = None
+        self._txtDescrizioneAPart = None
+        self.ddAeroportoD = None
+        self._txtDescrizioneADest = None
+        self._btnCercaItinerario = None
+        self.txtInTratte = None
+        self._txtDescrizioneTratte = None
         self.txt_result = None
         self.txt_container = None
 
     def load_interface(self):
         # title
-        self._title = ft.Text("Hello World", color="blue", size=24)
+        self._title = ft.Text("Esame 02-07-2018 TURNO C", color="blue", size=24)
         self._page.controls.append(self._title)
 
-        #ROW with some controls
-        # text field for the name
-        self.txt_name = ft.TextField(
-            label="name",
-            width=200,
-            hint_text="Insert a your name"
-        )
-
-        # button for the "hello" reply
-        self.btn_hello = ft.ElevatedButton(text="Hello", on_click=self._controller.handle_hello)
-        row1 = ft.Row([self.txt_name, self.btn_hello],
+        # ROW 1
+        self._txtDescrizioneCompagnie = ft.Text("# compagnie minimo", width=200)
+        self.txtInCompagnie = ft.TextField(width=300)
+        self._btnAnalizza = ft.ElevatedButton(text="Analizza aeroporti", on_click=self._controller.handleAnalizza)
+        row1 = ft.Row([self._txtDescrizioneCompagnie, self.txtInCompagnie, self._btnAnalizza],
                       alignment=ft.MainAxisAlignment.CENTER)
         self._page.controls.append(row1)
+
+        # ROW 2
+        self._txtDescrizioneAPart = ft.Text("Aeroporto di partenza", width=200)
+        self.ddAeroportoP = ft.Dropdown(label="Aeroporto di Partenza", width=300, on_change=self._controller.readDDAeroportoPartenza)
+        self._btnConnessi = ft.ElevatedButton(text="Aeroporti connessi", on_click=self._controller.handleConnessi,
+                                              disabled=True)
+        row2 = ft.Row([self._txtDescrizioneAPart, self.ddAeroportoP, self._btnConnessi],
+                      alignment=ft.MainAxisAlignment.CENTER)
+        self._page.controls.append(row2)
+
+        # ROW 3
+        self._txtDescrizioneADest = ft.Text("Aeroporto di destinazione", width=200)
+        self.ddAeroportoD = ft.Dropdown(label="Aeroporto di Destinazione", width=300, on_change=self._controller.readDDAeroportoArrivo)
+        row3 = ft.Row([self._txtDescrizioneADest, self.ddAeroportoD],
+                      alignment=ft.MainAxisAlignment.CENTER)
+        self._page.controls.append(row3)
+
+        # ROW 4
+        self._txtDescrizioneTratte = ft.Text("Numero di tratte massimo", width=200)
+        self.txtInTratte = ft.TextField(width=300)
+        self._btnCercaItinerario = ft.ElevatedButton(text="Cerca itinerario", on_click=self._controller.handleCercaItinerario)
+        row4 = ft.Row([self._txtDescrizioneTratte, self.txtInTratte, self._btnCercaItinerario],
+                      alignment=ft.MainAxisAlignment.CENTER)
+        self._page.controls.append(row4)
 
         # List View where the reply is printed
         self.txt_result = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=True)
